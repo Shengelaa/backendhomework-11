@@ -76,8 +76,6 @@ const updateExpenseById = async (req, res) => {
   res
     .status(200)
     .json({ message: "updated successfully", data: Expenses[index] });
-
-  res.json(Expenses[index]);
 };
 
 module.exports = {
