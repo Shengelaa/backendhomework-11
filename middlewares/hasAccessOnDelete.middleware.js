@@ -1,9 +1,11 @@
 const hasKey = (req, res, next) => {
-  const key = req.headers["key"];
+  console.log("req.body:", req.body); // debug print
+  const key = req.body?.key;
 
   if (key !== "123") {
-    return res.status(404).json({ error: "permittion denied" });
+    return res.status(403).json({ error: "permission denied 1" });
   }
+
   next();
 };
 
