@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+    <link rel="stylesheet" href="/css/home.css" />
+  </head>
+  <body>
+    <h1>Homepage</h1>
+    <a href="/api/expenses/create" class="create">Create New User</a>
+    <% expenses.forEach(el => { %>
+    <div class="card">
+      <h1 class="h1Ex">Expense: <%= el.expense %></h1>
+      <img
+        src="<%= el.url %>"
+        alt="expense image"
+        style="max-width: 300px; height: auto"
+        class="hhh"
+      />
+      <p class="imageurl">Image URL: <%= el.url %></p>
+      <div class="UpdDet">
+        <a href="/api/expenses/<%= el.id%>/">Details</a>
+        <a href="/api/expenses/<%= el.id%>/update">Update</a>
+      </div>
+      <form action="/api/expenses/<%= el.id%>/delete" method="post">
+        <button class="DeleteButton">Delete expense</button>
+      </form>
+    </div>
+    <% }) %>
+  </body>
+</html>

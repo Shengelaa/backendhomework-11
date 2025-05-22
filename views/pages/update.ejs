@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/update.css" />
+  </head>
+  <body>
+    <h1>Update Page</h1>
+    <a href="/">Go Back</a>
+    <form
+      action="/api/expenses/<%= expenses.id %>/updatee"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input type="text" name="expense" value="<%= expenses.expense %>" />
+      <p class="pp">Choose your image</p>
+      <input
+        type="file"
+        name="avatar"
+        accept="image/*"
+        value="<%= expenses.url %>"
+        class="h22"
+      />
+      <button>update</button>
+    </form>
+  </body>
+</html>

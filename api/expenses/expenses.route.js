@@ -13,6 +13,10 @@ const {
   getExpenseById,
   deleteExpenseById,
   updateExpenseById,
+  getCreateExpenseWeb,
+  getUpdateExpenseWeb,
+  updateExpenseFromWeb,
+  deleteFromWeb,
 } = require("./expenses.service");
 
 const expenseRoute = Router();
@@ -24,6 +28,25 @@ expenseRoute.post(
   hasAllrequiredFields,
   hasUnder3Mb,
   createExpense
+);
+
+expenseRoute.post("/:id/delete", deleteFromWeb);
+
+expenseRoute.get("/:id/update", getUpdateExpenseWeb);
+
+expenseRoute.get("/create", getCreateExpenseWeb);
+expenseRoute.post(
+  "/:id/updatee",
+  upload.single("avatar"),
+  updateExpenseFromWeb
+);
+
+expenseRoute.post(
+  "/create",
+  upload.single("avatar"),
+  hasAllrequiredFields,
+  hasUnder3Mb,
+  getCreateExpenseWeb
 );
 expenseRoute.get("/:id", upload.single("avatar"), getExpenseById);
 expenseRoute.delete(

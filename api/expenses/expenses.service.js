@@ -13,13 +13,72 @@ const app = express();
 app.use(express.json()); // body defined iqneba tuar dawer
 app.use(cors());
 app.use(express.static("uploads")); // nebismier folders irchev xdeba statikuri da hostze misawvdomi.
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 const getAllExpenses = async (req, res) => {
   const expenses = await readFile("expenses.json", true);
-
-  res.json(expenses);
+  res.render("pages/home.ejs", { expenses });
 };
 
+const getCreateExpenseWeb = async (req, res) => {
+  const expenses = await readFile("expenses.json", true);
+
+  res.render("pages/create.ejs", { expenses });
+};
+
+const getUpdateExpenseWeb = async (req, res) => {
+  const expenses = await readFile("expenses.json", true);
+  const id = Number(req.params.id);
+  const index = expenses.findIndex((el) => el.id === id);
+  if (index === -1) return res.status(400).send("user not found");
+
+  res.render("pages/update.ejs", { expenses: expenses[index] });
+};
+
+const updateExpenseFromWeb = async (req, res) => {
+  const expenses = await readFile("expenses.json", true);
+  const id = Number(req.params.id);
+  const { expense } = req.body;
+
+  const index = expenses.findIndex((el) => el.id === id);
+  if (index === -1) return res.status(400).send("expenses not found");
+
+  const updateReq = {};
+  if (expense) updateReq.expense = expense;
+  if (req.file && req.file.path) updateReq.url = req.file.path;
+
+  expenses[index] = {
+    ...expenses[index],
+    ...updateReq,
+  };
+
+  await writeFile("expenses.json", JSON.stringify(expenses, null, 2));
+  res.redirect("/");
+};
+
+const deleteFromWeb = async (req, res) => {
+  const id = Number(req.params.id);
+  const expenses = await readFile("expenses.json", true);
+
+  const index = expenses.findIndex((el) => el.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: "Expense not found" });
+  }
+  const fileName = expenses[index].url?.split("uploads/")[1];
+  const fileId = fileName.split(".")[0];
+  if (fileId) {
+    console.log("fileId not found");
+    const publicFileId = `uploads/${fileId}`;
+
+    await deleteFromCloudinary(publicFileId);
+  }
+  expenses.splice(index, 1);
+  await writeFile("expenses.json", JSON.stringify(expenses));
+
+  res.redirect("/");
+};
 const createExpense = async (req, res) => {
   const expenses = await readFile("expenses.json", true);
   let expenseFromBody = req.body.expense;
@@ -35,6 +94,7 @@ const createExpense = async (req, res) => {
   expenses.push(newExpense);
   await writeFile("expenses.json", JSON.stringify(expenses));
 
+  res.redirect("/");
   res.status(201).json({
     message: "Expense created successfully",
     data: newExpense,
@@ -51,14 +111,13 @@ const deleteExpenseById = async (req, res) => {
   }
   const fileName = expenses[index].url?.split("uploads/")[1];
   const fileId = fileName.split(".")[0];
-  if (!fileId) {
-    return res.status(404).json({ message: "file Id not found" });
+  if (fileId) {
+    console.log("fileId not found");
+    const publicFileId = `uploads/${fileId}`;
+
+    await deleteFromCloudinary(publicFileId);
   }
-  const publicFileId = `uploads/${fileId}`;
-  await deleteFromCloudinary(publicFileId);
-
   const deletedExpense = expenses.splice(index, 1);
-
   await writeFile("expenses.json", JSON.stringify(expenses));
 
   res
@@ -69,15 +128,12 @@ const deleteExpenseById = async (req, res) => {
 };
 
 const getExpenseById = async (req, res) => {
-  const id = Number(req.params.id);
   const expenses = await readFile("expenses.json", true);
-
+  const id = Number(req.params.id);
   const index = expenses.findIndex((el) => el.id === id);
-  if (index === -1) {
-    return res.status(404).json({ error: "expense not found" });
-  }
+  if (index === -1) return res.status(400).send("user not found");
 
-  res.json(expenses[index]);
+  res.render("pages/details.ejs", { expenses: expenses[index] });
 };
 
 const updateExpenseById = async (req, res) => {
@@ -122,4 +178,8 @@ module.exports = {
   getExpenseById,
   deleteExpenseById,
   updateExpenseById,
+  getCreateExpenseWeb,
+  getUpdateExpenseWeb,
+  updateExpenseFromWeb,
+  deleteFromWeb,
 };
