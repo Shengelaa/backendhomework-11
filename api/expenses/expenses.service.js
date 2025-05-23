@@ -22,6 +22,10 @@ const getAllExpenses = async (req, res) => {
   res.render("pages/home.ejs", { expenses });
 };
 
+//რამოდენიმე ფუნქცია დავტოვე
+//იმისდაა მიუხედავათ რომ ვებში არ მჭირდება
+// წინა დავალების პონტში რომ შეამოწმო 
+
 const getCreateExpenseWeb = async (req, res) => {
   const expenses = await readFile("expenses.json", true);
 
@@ -48,6 +52,14 @@ const updateExpenseFromWeb = async (req, res) => {
   const updateReq = {};
   if (expense) updateReq.expense = expense;
   if (req.file && req.file.path) updateReq.url = req.file.path;
+  const fileName = expenses[index].url?.split("uploads/")[1];
+  const fileId = fileName.split(".")[0];
+  if (fileId) {
+    console.log("fileId not found");
+    const publicFileId = `uploads/${fileId}`;
+
+    await deleteFromCloudinary(publicFileId);
+  }
 
   expenses[index] = {
     ...expenses[index],
