@@ -9,57 +9,73 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  font-size: 10px;
   align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  padding: 30px 15px;
+  font-size: 14px;
+  color: #2c3e50;
 }
-a {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
+
 h1 {
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 20px 0px;
+  margin-bottom: 20px;
+  color: #34495e;
+}
+
+a {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-decoration: none;
+  color: #2980b9;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #1b6391;
 }
 
 div {
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
-  max-width: 800px;
-  border: 2px solid black;
-  border-radius: 10px;
   justify-content: space-around;
+  max-width: 800px;
+  width: 100%;
+  border: 2px solid #dcdde1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  padding: 25px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  gap: 12px;
 }
 
 .id {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 0px 10px;
-  margin-top: 10px;
+  margin: 0;
+  color: #34495e;
 }
 
 .name {
-  color: red;
-  margin: 0px 9px;
+  font-size: 18px;
   font-weight: 700;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 16px;
+  color: #e74c3c;
+  margin: 0;
 }
 
 .Img {
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 600;
-  font-family: arial;
-  margin: 5px 10px;
+  color: #7f8c8d;
+  word-break: break-all;
+  margin: 0;
 }
 
 .Created {
   font-size: 16px;
-  margin: 0px 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 800;
-  margin-bottom: 20px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
 }
